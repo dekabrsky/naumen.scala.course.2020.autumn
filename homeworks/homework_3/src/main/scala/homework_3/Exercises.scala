@@ -1,7 +1,7 @@
 package homework_3
 
-object Exercises {
 
+object Exercises {
 
     /**
      * Задание №1
@@ -12,11 +12,29 @@ object Exercises {
      * Реализуйте функцию тремя разными способами, отличающимися тем, как определяется какой тип имеет значение переданное в аргументе. 
      * Определение типа необходимо для реализации специальной логики работы с Boolean значениями, которая описана в условии выше.
      */
-    def prettyBooleanFormatter1(x: Any): String = ???
+    def prettyBooleanFormatter1(x: Any): String = {
+        if (x.isInstanceOf[Boolean])
+            if (x.asInstanceOf[Boolean]) "правда"
+            else "ложь"
+        else x.toString
+    }
 
-    def prettyBooleanFormatter2(x: Any): String = ???
+    def prettyBooleanFormatter2(x: Any): String = {
+        if (x.getClass.getSimpleName == "Boolean") {
+            if (x.asInstanceOf[Boolean]) "правда"
+            else "ложь"
+        }
+        else x.toString
+    }
 
-    def prettyBooleanFormatter3(x: Any): String = ???
+    def prettyBooleanFormatter3(x: Any): String = {
+        x match {
+            case bool: Boolean =>
+                if (bool) "правда"
+                else "ложь"
+            case _ => x.toString
+        }
+    }
 
 
     /**
@@ -26,11 +44,11 @@ object Exercises {
      * Реализуйте функцию тремя разными способами, отличающимися тем как функция себя ведет на пустой коллекции. 
      * Обратите внимание на возвращаемые типы.
      */
-    def max1(xs: Seq[Int]): Int = ???
+    def max1(xs: Seq[Int]): Int = if (xs.isEmpty) throw new IllegalArgumentException else xs.max
 
-    def max2(xs: Seq[Int]): Seq[Int] = ???
+    def max2(xs: Seq[Int]): Seq[Int] = if (xs.isEmpty) Seq.empty else Seq(xs.max)
 
-    def max3(xs: Seq[Int]): Option[Int] = ???
+    def max3(xs: Seq[Int]): Option[Int] = if (xs.isEmpty) None else Some(xs.max)
 
     /**
      * Задание №3
@@ -42,8 +60,23 @@ object Exercises {
      * Реализуйте на основе нее 3 варианта суммирования 2х чисел, отличающиеся способом передачи этих 2х чисел в функцию sumIntegers.
      * Как минимум одна из реализаций должна использовать тип данных (класс) написанный вами самостоятельно.
      */ 
-    def sum1(x: Int, y: Int): Int = sumIntegers(???)
-    def sum2(x: Int, y: Int): Int = sumIntegers(???)
-    def sum3(x: Int, y: Int): Int = sumIntegers(???)
+    def sum1(x: Int, y: Int): Int = sumIntegers(MyIterableClass(x, y))
+    def sum2(x: Int, y: Int): Int = sumIntegers(MyLazyClass(x,y).getElems)
+    def sum3(x: Int, y: Int): Int = sumIntegers(Set(x) ++ Set(y))
 
+
+    case class MyIterableClass[T](x: T, y: T) extends Iterable[T]{
+        override def iterator: Iterator[T] ={
+            Iterator(x,y)
+        }
+    }
+
+    case class MyLazyClass[T](x: T, y: T){
+        def getElems: Seq[T] = for (e <- Seq(x, y)) yield e
+    }
+
+
+    def main(args: Array[String]): Unit = {
+        println(prettyBooleanFormatter1(5.00))
+    }
 }
