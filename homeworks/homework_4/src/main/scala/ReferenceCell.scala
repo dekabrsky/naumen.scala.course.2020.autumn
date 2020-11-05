@@ -19,7 +19,10 @@ class ReferenceCell (val ix: Int, val iy: Int, val table: Table) extends Cell{
     while (true){
       cell match {
         case None => return ""
-          case Some(c:ReferenceCell) =>
+        case Some(c:EmptyCell) => return c.toString
+        case Some(c:NumberCell) => return c.toString
+        case Some(c:StringCell) => return c.toString
+        case Some(c:ReferenceCell) =>
           val x = c.ix
           val y = c.iy
           cell = table.getCell(x, y)
@@ -28,9 +31,8 @@ class ReferenceCell (val ix: Int, val iy: Int, val table: Table) extends Cell{
             return "cyclic"
           else
             ml += x + y*table.width
-        case Some(c:Cell) => c.toString
       }
     }
-    cell.toString
+    return cell.toString
   }
 }

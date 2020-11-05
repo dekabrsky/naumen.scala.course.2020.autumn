@@ -57,7 +57,7 @@ object Test extends TestSuite {
       table.setCell(2, 0, cellEmpty20)
       table.setCell(2, 1, cellRef21)
       table.setCell(2, 2, cellRef22)
-      for (i <- 0 until 8) {
+      for (i <- 0 until 9) {
         val value = table.getCell(i / 3, i % 3).get.toString
         i match {
           case 0 => assert(value == "00")
