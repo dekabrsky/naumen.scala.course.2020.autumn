@@ -29,3 +29,4 @@ object Functor {
         def map[A, B](a: F[A])(f: A => B): F[B] = M.flatMap(a)(b => M.pure(f(b)))
     }
 }
+
